@@ -1,0 +1,28 @@
+﻿# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+[Tt]estResults/
+*.dll
+*.exe
+*.appx
+*.appxupload
+*.log
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+
+# Others
+*.dbmdl
+*.bak
+*.ldf
+*.mdf
