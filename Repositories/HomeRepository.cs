@@ -25,7 +25,7 @@ namespace BookShop.Repositories
                 from book in _db.Books
                 join genre in _db.Genres
                 on book.GenreId equals genre.Id
-                where string.IsNullOrEmpty(sTerm)
+                where string.IsNullOrWhiteSpace(sTerm)
                       || book.BookName.ToLower().StartsWith(sTerm)
                       || book.AuthorName.ToLower().Contains(sTerm)
                 select new Book

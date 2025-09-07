@@ -19,6 +19,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.Sign
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IHomeRepository, HomeRepository>();
+builder.Services.AddTransient<ICartRepository, CartRepositories>();
+
 
 var app = builder.Build();
 using (var scop = app.Services.CreateScope())

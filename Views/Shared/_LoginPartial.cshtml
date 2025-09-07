@@ -3,6 +3,14 @@
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
+
+    <li class="nav-item">
+        <a class="nav-link " href="#">
+            <span id="cartCount" class="badge rounded-pill bg-info text-white">0</span>
+            <i class="bi bi-cart text-white"></i>
+        </a>
+    </li>
+
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
@@ -25,12 +33,6 @@
 else
 {
     
-        <li class="nav-item">
-            <a class="nav-link " href="#">
-                <span class="badge rounded-pill bg-info text-white">(0)</span>
-                <i class="bi bi-cart text-white"></i>
-            </a>
-        </li>
 
             
 
