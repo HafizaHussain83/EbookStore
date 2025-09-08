@@ -72,93 +72,81 @@ namespace BookShop.Repositories
             return await GetCatItemCount(userId);
         }
 
-
-        //public async Task<int>AddItem(int bookId, int qty)
-        //{
-        //    string userId = GetUserId();
-
-        //    using var transaction = await _db.Database.BeginTransactionAsync();
-        //    try
-        //    {
-
-        //        if (string.IsNullOrEmpty(userId))
-        //        {
-        //           throw new Exception("User is not Logged in.");
-        //        }
-
-        //        var cart = await  GetCart(userId);
-
-        //        if (cart == null)
-        //        {
-        //            cart = new ShoppingCart
-        //            {
-        //                UserId = userId,
-        //            };
-        //            _db.ShoppingCarts.Add(cart);
-        //            await _db.SaveChangesAsync();
-        //        }
-
-        //        var cartItem = _db.CartDetails.FirstOrDefault(ci => ci.ShoppingCartId == cart.Id && ci.BookId == bookId);
-
-        //        if (cartItem != null)
-        //        {
-        //            cartItem.Quantity += qty;   // ✅ fixed property name
-        //        }
-        //        else
-        //        {
-        //            cartItem = new CartDetails
-        //            {
-        //                ShoppingCartId = cart.Id,
-        //                BookId = bookId,
-        //                Quantity = qty
-        //            };
-        //            _db.CartDetails.Add(cartItem);
-        //        }
-
-        //        await _db.SaveChangesAsync();
-        //        await transaction.CommitAsync();
-
-        //    }
-        //    catch (Exception)
-        //    {
-        //      //  await transaction.RollbackAsync();
-
-        //    }
-        //    var cartItemCount = GetCatItemCount(userId);
-        //    return cartItemCount.Result;
-        //}
         public async Task<int> RemoveItem(int bookId, int qty = 1)
         {
             string userId = GetUserId();
             using var transaction = await _db.Database.BeginTransactionAsync();
+
             try
-            {               
+            {
                 if (string.IsNullOrEmpty(userId))
-                {    throw new Exception("User is not Logged in.");
-                }
-                var cart = GetCart(userId);
+                    throw new Exception("User is not Logged in.");
+
+                var cart = await GetCart(userId);   // ✅ await here
                 if (cart == null)
-                { throw new Exception(" Invalid Cart"); // no cart to remove from
-                }
-                var cartItem = _db.CartDetails.FirstOrDefault(ci => ci.ShoppingCartId == cart.Id && ci.BookId == bookId);
+                    throw new Exception("Invalid Cart");
+
+                var cartItem = await _db.CartDetails
+                    .FirstOrDefaultAsync(ci => ci.ShoppingCartId == cart.Id && ci.BookId == bookId);
+
                 if (cartItem == null)
-                {                    throw new Exception("No Item in cart");// item not in cart
-                }
+                    throw new Exception("No Item in cart");
+
                 if (cartItem.Quantity > qty)
-                {    cartItem.Quantity -= qty; // decrease quantity
-                }  else
-                { _db.CartDetails.Remove(cartItem); // remove completely
+                {
+                    cartItem.Quantity -= qty; // decrease quantity
                 }
+                else
+                {
+                    _db.CartDetails.Remove(cartItem); // remove completely
+                }
+
                 await _db.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
             catch
-            {    
-                //   await transaction.RollbackAsync();
+            {
+                await transaction.RollbackAsync();
+                throw;
             }
-            var cartItemCount = GetCatItemCount(userId);
-            return cartItemCount.Result;
+
+            return await GetCatItemCount(userId);  // ✅ await instead of .Result
         }
+
+
+
+        //public async Task<int> RemoveItem(int bookId, int qty = 1)
+        //{
+        //    string userId = GetUserId();
+        //    using var transaction = await _db.Database.BeginTransactionAsync();
+        //    try
+        //    {               
+        //        if (string.IsNullOrEmpty(userId))
+        //        {    throw new Exception("User is not Logged in.");
+        //        }
+        //        var cart = GetCart(userId);
+        //        if (cart == null)
+        //        { throw new Exception(" Invalid Cart"); // no cart to remove from
+        //        }
+        //        var cartItem = _db.CartDetails.FirstOrDefault(ci => ci.ShoppingCartId == cart.Id && ci.BookId == bookId);
+        //        if (cartItem == null)
+        //        {                    throw new Exception("No Item in cart");// item not in cart
+        //        }
+        //        if (cartItem.Quantity > qty)
+        //        {    cartItem.Quantity -= qty; // decrease quantity
+        //        }  else
+        //        { _db.CartDetails.Remove(cartItem); // remove completely
+        //        }
+        //        await _db.SaveChangesAsync();
+        //        await transaction.CommitAsync();
+        //    }
+        //    catch
+        //    {    
+        //        //   await transaction.RollbackAsync();
+        //    }
+        //    var cartItemCount = GetCatItemCount(userId);
+        //    return cartItemCount.Result;
+        //}
         public async Task<ShoppingCart> GetUserCart()
         {
             

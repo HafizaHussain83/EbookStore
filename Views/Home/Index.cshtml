@@ -80,15 +80,20 @@
 @section scripts {
     <script>
         async function add(bookId) {
+            var usernameEL=document.getElementById("username");
+               if(usernameEL==null){
+                    window.location.href="Identity/Account/Login";
+                
+               }
+
             try {
                 var response = await fetch(`/Cart/addItem?bookId=${bookId}`);
                 if (response.status == 200) {
                     var result = await response.json();
-                    console.log(result);
                     var cartItemEL = document.getElementById("cartCount");
                     cartItemEL.innerHTML = result;
-
-                    alert("Book added to cart successfully!");
+                     window.location.href="#cartCount";
+                   
                 }
             } catch (error) {
                 console.error(error);
