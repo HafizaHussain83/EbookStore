@@ -87,7 +87,8 @@
                }
 
             try {
-                var response = await fetch(`/Cart/addItem?bookId=${bookId}`);
+            var response = await fetch(`/Cart/AddItem?bookId=${bookId}`, { method: "POST" });
+
                 if (response.status == 200) {
                     var result = await response.json();
                     var cartItemEL = document.getElementById("cartCount");

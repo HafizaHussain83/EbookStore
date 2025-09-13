@@ -9,6 +9,7 @@ namespace BookShop.Repositories
         Task<ShoppingCart> GetUserCart();
         Task<int> GetCatItemCount(string userId = "");
         Task<ShoppingCart> GetCart(string userId);
+        Task<bool> CheckOut(CheckoutModel model);
 
     }
 }

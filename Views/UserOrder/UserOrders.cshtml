@@ -1,0 +1,113 @@
+﻿@model IEnumerable<BookShop.Models.Orders>
+@{
+    
+}
+<div class="container py-4">
+    @if (Model != null && Model.Count()>0 )
+    {
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0"><i class="bi bi-cart-fill me-2"></i> My Orders</h3>
+                <a href="/Identity/Account/Manage" class=" btn btn-primary my-2">Back</a>
+
+
+             
+            </div>
+
+
+
+            <div class="card-body">
+                <div class="table-responsive">
+                </div>  
+          <table class="table table-striped" >
+              <tr>
+                 <th>OrderData</th>
+                   <th>OrderStatus</th>
+                   
+              </tr>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                            <td>@order.OrderStatus.StatusName</td>
+                           
+                               
+                          
+
+                        </tr>
+                        @if (order.OrderDetail != null && order.OrderDetail.Count > 0)
+                        {
+                           
+
+
+
+                        <tr>
+                            <td>
+                                <table class="table align-middle table-hover">
+                                        <tr>
+                                            <td>
+                                                Total:
+                                            </td>
+                                            <td>
+                                                @(order.OrderDetail.Select(item => item.Book.Price * item.Quantity).Sum().ToString("C"))
+                                            </td>
+                                        </tr>
+
+
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Book</th>
+                                            <th>Image</th>
+                                            <th>Genre</th>
+                                            <th>Unit Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total Price</th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in order.OrderDetail)
+                                        {
+                                              
+                                            <tr>
+                                                <td class="fw-semibold">@item.Book.BookName</td>
+                                                <td>
+                                                    <img src="@(string.IsNullOrEmpty(item.Book.Image) ? "/css/images/noImage.jfif" : item.Book.Image)"
+                                                         class="rounded shadow-sm"
+                                                         style="width:60px;height:auto;"
+                                                         alt="@item.Book.BookName" />
+                                                </td>
+                                                <td>@item.Book.Genre.GenreName</td>
+                                                <td>@item.Book.Price.ToString("C")</td>
+                                                <td>@item.Quantity</td>
+                                                <td class="fw-bold text-success">
+                                                    @((item.Book.Price * item.Quantity).ToString("C"))
+                                                </td>
+                                               
+                                            </tr>
+                                           
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </td>
+                        </tr>
+                        }
+                    }
+
+          </table>
+
+
+               
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-cart-x fs-1 text-muted"></i>
+            <h2 class="mt-3">No Order</h2>
+            <p><a class="btn btn-outline-primary mt-2" href="/Home/Index">Continue Shopping</a></p>
+        </div>
+    }
+</div>

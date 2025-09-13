@@ -15,5 +15,7 @@ namespace BookShop.Models
         [Required]
         public Book Book { get; set; }
         public int Quantity { get; set; }
+        [Required]
+        public double UnitPrice { get; set; }
     }
 }

@@ -1,95 +1,4 @@
 ﻿
-@* @model ShoppingCart *@
-@* @{ *@
-@*     ViewData["Title"] = "GetUserCart"; *@
-@* } *@
-
-@* <div style="width:90%;margin:auto"> *@
-@*     @if (Model != null && Model.CartDetails != null && Model.CartDetails.Count > 0) *@
-@*     { *@
-@*         <h3>My Cart</h3> *@
-
-@*         <table class="table table-striped"> *@
-@*             <thead> *@
-@*                 <tr> *@
-@*                     <th>Book</th> *@
-@*                     <th>Image</th> *@
-@*                     <th>Genre</th> *@
-@*                     <th>Unit Price</th> *@
-@*                     <th>Quantity</th> *@
-@*                     <th>Total Price</th> *@
-@*                     <th>Action</th> *@
-@*                 </tr> *@
-@*             </thead> *@
-@*             <tbody> *@
-@*                 @foreach (var item in Model.CartDetails) *@
-@*                 { *@
-@*                     <tr> *@
-@*                         <td>@item.Book.BookName</td> *@
-@*                         <td> *@
-@*                             @if (string.IsNullOrEmpty(item.Book.Image)) *@
-@*                             { *@
-@*                                 <img src="/css/images/noImage.jfif" *@
-@*                                      style="width:60px;height:auto;" *@
-@*                                      alt="@item.Book.BookName" /> *@
-@*                             } *@
-@*                             else *@
-@*                             { *@
-@*                                 <img src="@item.Book.Image" *@
-@*                                      style="width:60px;height:auto;" *@
-@*                                      alt="@item.Book.BookName" /> *@
-@*                             } *@
-@*                         </td> *@
-@*                         <td>@item.Book.Genre.GenreName</td> *@
-@*                         <td>@item.Book.Price.ToString("C")</td> *@
-@*                         <td>@item.Quantity</td> *@
-@*                         <td>@((item.Book.Price * item.Quantity).ToString("C"))</td> *@
-@*                         <td> *@
-                           
-@*                             <button class="btn btn-info add-item" data-id="@item.BookId">+</button> *@
-@*                             <button class="btn btn-warning remove-item" data-id="@item.BookId">-</button> *@
-
-
-
-@*                         </td> *@
-@*                     </tr> *@
-@*                 } *@
-@*             </tbody> *@
-@*         </table> *@
-
-@*         <div class="my-2"> *@
-@*             <h5>Total: @(Model.CartDetails.Select(item => item.Book.Price * item.Quantity).Sum().ToString("C"))</h5> *@
-@*         </div> *@
-
-@*         <div class="my-2"> *@
-@*             <a class="btn btn-primary" href="#">CheckOut</a> *@
-@*         </div> *@
-@*     } *@
-@*     else *@
-@*     { *@
-@*         <h2>Your cart is empty.</h2> *@
-@*         <p><a href="/Products">Continue Shopping</a></p> *@
-@*     } *@
-@* </div> *@
-@* @section Scripts { *@
-@*     <script> *@
-@*         document.querySelectorAll(".add-item").forEach(btn => { *@
-@*             btn.addEventListener("click", async () => { *@
-@*                 const bookId = btn.getAttribute("data-id"); *@
-@*                 await fetch(`/Cart/AddItem?bookId=${bookId}`, { method: "POST" }); *@
-@*                 location.reload(); // reloads cart after update *@
-@*             }); *@
-@*         }); *@
-
-@*         document.querySelectorAll(".remove-item").forEach(btn => { *@
-@*             btn.addEventListener("click", async () => { *@
-@*                 const bookId = btn.getAttribute("data-id"); *@
-@*                 await fetch(`/Cart/RemoveItem?bookId=${bookId}`, { method: "POST" }); *@
-@*                 location.reload(); // reloads cart after update *@
-@*             }); *@
-@*         }); *@
-@*     </script> *@
-@* } *@
 
 @model ShoppingCart
 @{
@@ -99,6 +8,8 @@
 <div class="container py-4">
     @if (Model != null && Model.CartDetails != null && Model.CartDetails.Count > 0)
     {
+
+
         <div class="card shadow-lg border-0 rounded-3">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h3 class="mb-0"><i class="bi bi-cart-fill me-2"></i> My Shopping Cart</h3>
@@ -160,7 +71,7 @@
                         </span>
                     </h5>
 
-                    <a class="btn btn-lg btn-success shadow-sm" href="#">
+                    <a class="btn btn-lg btn-success shadow-sm" href="/Cart/Checkout">
                         <i class="bi bi-credit-card me-2"></i> Proceed to Checkout
                     </a>
                 </div>
